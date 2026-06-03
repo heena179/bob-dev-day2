@@ -15,9 +15,19 @@ function emailExists(email) {
     return registrations.some(reg => reg.email.toLowerCase() === email.toLowerCase());
 }
 
+// Determine event date based on current page location
+function getEventDate() {
+    const isOttawa = window.location.pathname.includes('/ottawa');
+    if (isOttawa) {
+        return new Date('2026-06-25T08:30:00').getTime();
+    } else {
+        return new Date('2026-06-15T08:30:00').getTime();
+    }
+}
+
 // Countdown Timer
 function initCountdown() {
-    const eventDate = new Date('2026-06-15T08:30:00').getTime();
+    const eventDate = getEventDate();
     
     function updateCountdown() {
         const now = new Date().getTime();
