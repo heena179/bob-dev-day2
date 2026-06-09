@@ -7,18 +7,18 @@ const params = new URLSearchParams(window.location.search);
 const trackCode = (params.get('track') || 'A').toUpperCase();
 
 const trackNames = {
-    'A': 'Track A — Java Modernization with Bob',
-    'B': 'Track B — Build an Agent in 45 Minutes',
-    'C': 'Track C — Bob vs. a Real-World App',
-    'D': "Track D — Already Use Cursor? What You're Missing",
-    'E': 'Track E — AI-Assisted Testing & CI',
-    'F': 'Track F — The Governance Lane'
+    'A': 'TRACK A — JAVA MODERNIZATION WITH BOB',
+    'B': 'BUILD AN AGENT IN 45 MINS',
+    'C': 'BOB VS. A REAL-WORLD APP',
+    'D': "ALREADY USE CURSOR? WHAT YOU'RE MISSING",
+    'E': 'AI-ASSISTED TESTING & CI',
+    'F': 'THE GOVERNANCE LANE'
 };
 
 document.getElementById('trackDisplay').textContent = '🔒 ' + trackNames[trackCode];
 
 function generateCertificate() {
-    const name = document.getElementById("nameInput").value.trim();
+    const name = document.getElementById("nameInput").value.trim().toUpperCase();
     
     if (!name) {
         alert("Please enter your name");
@@ -31,16 +31,16 @@ function generateCertificate() {
         
         ctx.drawImage(image, 0, 0);
         
-        // Draw attendee name
+        // Draw attendee name (much lower, below "PRESENTED TO")
         ctx.textAlign = "center";
         ctx.fillStyle = "#FFFFFF";
-        ctx.font = "bold 70px Georgia";
-        ctx.fillText(name, canvas.width / 2, 380);
+        ctx.font = "bold 60px Georgia";
+        ctx.fillText(name, canvas.width / 2, 465);
         
-        // Draw track name in the blue box (between recognition & thank you text)
-        ctx.font = "bold 18px 'Courier New', monospace";
-        ctx.fillStyle = "#4589FF";  // IBM Blue Light
-        ctx.fillText(trackNames[trackCode], canvas.width / 2, 545);
+        // Draw track name (between recognition and thank you text)
+        ctx.font = "bold 24px Georgia";
+        ctx.fillStyle = "#FFFFFF";
+        ctx.fillText(trackNames[trackCode], canvas.width / 2, 625);
         
         canvas.style.display = "block";
         document.getElementById("downloadBtn").style.display = "inline-block";
