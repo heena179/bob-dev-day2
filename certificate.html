@@ -1,0 +1,431 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Get Your Certificate · IBM Bob Developer Day</title>
+<style>
+@import url('https://fonts.googleapis.com/css2?family=IBM+Plex+Sans:wght@300;400;600;700&family=IBM+Plex+Mono:wght@400;500&display=swap');
+*,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
+:root{
+  --blue:#0F62FE;--blue-light:#4589FF;--blue-dark:#0043CE;
+  --black:#080808;--gray-90:#161616;--gray-80:#262626;--gray-60:#525252;--white:#ffffff;
+}
+html,body{min-height:100vh;background:var(--black);font-family:'IBM Plex Sans',sans-serif;color:var(--white);-webkit-font-smoothing:antialiased;}
+
+/* NAV */
+nav{display:flex;align-items:center;justify-content:space-between;padding:18px 40px;border-bottom:1px solid rgba(255,255,255,0.07);background:rgba(8,8,8,0.97);position:sticky;top:0;z-index:100;}
+.nav-logo{height:22px;width:auto}
+.nav-link{font-family:'IBM Plex Mono',monospace;font-size:10px;letter-spacing:0.15em;text-transform:uppercase;color:rgba(255,255,255,0.4);text-decoration:none;}
+.nav-link:hover{color:var(--blue-light)}
+
+/* HERO */
+.hero{text-align:center;padding:56px 24px 40px;border-bottom:1px solid rgba(255,255,255,0.06);}
+.hero-eyebrow{font-family:'IBM Plex Mono',monospace;font-size:10px;letter-spacing:0.22em;text-transform:uppercase;color:var(--blue-light);margin-bottom:12px;}
+.hero-title{font-size:clamp(26px,4vw,40px);font-weight:700;letter-spacing:-0.025em;line-height:1.1;margin-bottom:10px;}
+.hero-sub{font-size:14px;font-weight:300;color:rgba(255,255,255,0.45);line-height:1.6;max-width:440px;margin:0 auto 16px;}
+
+/* TRACK BADGE shown in hero when track is pre-selected */
+.track-badge{display:inline-flex;align-items:center;gap:8px;background:rgba(15,98,254,0.1);border:1px solid rgba(15,98,254,0.35);padding:8px 18px;margin-top:4px;}
+.track-badge-label{font-family:'IBM Plex Mono',monospace;font-size:9px;letter-spacing:0.18em;text-transform:uppercase;color:var(--blue-light);}
+.track-badge-name{font-size:13px;font-weight:600;color:var(--white);}
+.track-badge-lock{font-size:11px;opacity:0.5;}
+
+/* MAIN LAYOUT */
+.main{display:grid;grid-template-columns:380px 1fr;gap:0;max-width:1240px;margin:0 auto;min-height:calc(100vh - 200px);}
+
+/* FORM PANEL */
+.form-panel{padding:44px 36px;border-right:1px solid rgba(255,255,255,0.07);background:var(--gray-90);}
+.form-section-label{font-family:'IBM Plex Mono',monospace;font-size:9px;letter-spacing:0.22em;text-transform:uppercase;color:rgba(255,255,255,0.3);margin-bottom:22px;}
+.field{margin-bottom:20px}
+label.field-label{display:block;font-size:11px;font-weight:600;letter-spacing:0.08em;text-transform:uppercase;color:rgba(255,255,255,0.45);margin-bottom:7px;}
+input{width:100%;background:var(--gray-80);border:1px solid rgba(255,255,255,0.1);color:var(--white);font-family:'IBM Plex Sans',sans-serif;font-size:16px;padding:13px 14px;outline:none;transition:border-color .2s;border-radius:0;}
+input:focus{border-color:var(--blue)}
+input::placeholder{color:rgba(255,255,255,0.2)}
+
+/* Locked track display (when coming from QR) */
+.locked-track{background:rgba(15,98,254,0.08);border:1px solid rgba(15,98,254,0.25);padding:13px 14px;display:flex;align-items:center;justify-content:space-between;}
+.locked-track-text{font-size:14px;color:var(--white);font-weight:400;}
+.locked-track-pill{font-family:'IBM Plex Mono',monospace;font-size:8px;letter-spacing:0.12em;text-transform:uppercase;color:var(--blue-light);background:rgba(15,98,254,0.15);border:1px solid rgba(15,98,254,0.3);padding:3px 8px;}
+
+/* Track selector (fallback when no QR) */
+.track-grid{display:grid;grid-template-columns:1fr 1fr;gap:7px;margin-top:4px;}
+.track-card{border:1px solid rgba(255,255,255,0.1);background:var(--gray-80);padding:10px 12px;cursor:pointer;transition:all .15s;position:relative;}
+.track-card:hover{border-color:rgba(15,98,254,0.4)}
+.track-card.selected{border-color:var(--blue);background:rgba(15,98,254,0.1);}
+.track-card input[type=radio]{position:absolute;opacity:0;width:0;height:0;}
+.track-letter{font-family:'IBM Plex Mono',monospace;font-size:9px;font-weight:500;color:var(--blue-light);letter-spacing:0.1em;margin-bottom:2px;}
+.track-name-text{font-size:11px;color:rgba(255,255,255,0.7);line-height:1.3;}
+
+.divider-line{height:1px;background:rgba(255,255,255,0.07);margin:24px 0;}
+
+/* Submit button */
+.btn-submit{width:100%;background:var(--blue);border:none;color:var(--white);font-family:'IBM Plex Sans',sans-serif;font-size:14px;font-weight:600;letter-spacing:0.06em;text-transform:uppercase;padding:16px 24px;cursor:pointer;transition:background .2s;display:flex;align-items:center;justify-content:center;gap:10px;}
+.btn-submit:hover{background:var(--blue-dark)}
+.btn-submit:disabled{background:var(--gray-60);cursor:not-allowed}
+.spinner{display:none;width:16px;height:16px;border:2px solid rgba(255,255,255,0.3);border-top-color:white;border-radius:50%;animation:spin .7s linear infinite;flex-shrink:0;}
+.btn-submit.loading .btn-text{display:none}
+.btn-submit.loading .spinner{display:block}
+@keyframes spin{to{transform:rotate(360deg)}}
+
+.status{margin-top:14px;padding:12px 14px;font-size:12px;line-height:1.6;display:none;}
+.status.success{background:rgba(36,161,72,0.12);border:1px solid rgba(36,161,72,0.3);color:#42be65;display:block;}
+.status.error{background:rgba(250,77,86,0.1);border:1px solid rgba(250,77,86,0.25);color:#ff8389;display:block;}
+
+.note{margin-top:14px;font-size:11px;color:rgba(255,255,255,0.22);line-height:1.6;}
+.note a{color:var(--blue-light);}
+
+/* PREVIEW PANEL */
+.preview-panel{padding:44px 44px;display:flex;flex-direction:column;align-items:center;background:var(--black);}
+.preview-label{font-family:'IBM Plex Mono',monospace;font-size:9px;letter-spacing:0.22em;text-transform:uppercase;color:rgba(255,255,255,0.2);margin-bottom:18px;align-self:flex-start;}
+.canvas-wrap{width:100%;max-width:780px;box-shadow:0 0 0 1px rgba(15,98,254,0.2),0 32px 80px rgba(0,0,0,0.8);}
+#certCanvas{width:100%;height:auto;display:block;}
+
+.btn-download{margin-top:18px;display:flex;align-items:center;gap:10px;background:transparent;border:1px solid rgba(15,98,254,0.4);color:var(--blue-light);font-family:'IBM Plex Sans',sans-serif;font-size:12px;font-weight:600;letter-spacing:0.1em;text-transform:uppercase;padding:12px 22px;cursor:pointer;transition:all .2s;text-decoration:none;}
+.btn-download:hover{background:rgba(15,98,254,0.1);border-color:var(--blue);}
+.btn-download svg{width:15px;height:15px;flex-shrink:0;}
+
+/* Steps */
+.steps{margin-top:32px;align-self:flex-start;width:100%;max-width:780px;}
+.steps-title{font-family:'IBM Plex Mono',monospace;font-size:9px;letter-spacing:0.22em;text-transform:uppercase;color:rgba(255,255,255,0.18);margin-bottom:12px;}
+.step-list{display:flex;border:1px solid rgba(255,255,255,0.06);}
+.step{flex:1;padding:13px 15px;border-right:1px solid rgba(255,255,255,0.06);}
+.step:last-child{border-right:none}
+.step-num{font-family:'IBM Plex Mono',monospace;font-size:9px;color:var(--blue);letter-spacing:0.1em;margin-bottom:3px;}
+.step-text{font-size:11px;color:rgba(255,255,255,0.35);line-height:1.4;}
+
+@media(max-width:860px){
+  .main{grid-template-columns:1fr}
+  .form-panel{border-right:none;border-bottom:1px solid rgba(255,255,255,0.07)}
+  nav,.form-panel,.preview-panel{padding-left:20px;padding-right:20px}
+  .step-list{flex-wrap:wrap}
+  .step{min-width:50%;border-bottom:1px solid rgba(255,255,255,0.06)}
+}
+</style>
+</head>
+<body>
+
+<nav>
+  <img class="nav-logo" src="data:image/svg+xml;base64,PD94bWwgdmVyc2lvbj0iMS4wIiBlbmNvZGluZz0iVVRGLTgiIHN0YW5kYWxvbmU9Im5vIj8+CjwhRE9DVFlQRSBzdmcgUFVCTElDICItLy9XM0MvL0RURCBTVkcgMS4wLy9FTiIgImh0dHA6Ly93d3cudzMub3JnL1RSLzIwMDEvUkVDLVNWRy0yMDAxMDkwNC9EVEQvc3ZnMTAuZHRkIj4KPCEtLSBDcmVhdGVkIHdpdGggSW5rc2NhcGUgKGh0dHA6Ly93d3cuaW5rc2NhcGUub3JnLykgYnkgTWFyc3VwaWxhbWkgLS0+CjxzdmcKICAgeG1sbnM6c3ZnPSJodHRwOi8vd3d3LnczLm9yZy8yMDAwL3N2ZyIKICAgeG1sbnM9Imh0dHA6Ly93d3cudzMub3JnLzIwMDAvc3ZnIgogICB2ZXJzaW9uPSIxLjAiCiAgIHdpZHRoPSIxMDI0IgogICBoZWlnaHQ9IjQyNyIKICAgdmlld0JveD0iLTkuNjc0MDYyNSAtOS42NzQwNjI1IDgxOS4zNDgxMjUgMzQxLjgxNjg3NSIKICAgaWQ9InN2ZzM4OTciPgogIDxkZWZzCiAgICAgaWQ9ImRlZnMzODk5IiAvPgogIDxwYXRoCiAgICAgZD0iTSAwLC0xLjEzNjg2ODRlLTEzIEwgMCwyMi4wNjI1IEwgMTU1LjcxODc1LDIyLjA2MjUgTCAxNTUuNzE4NzUsLTEuMTM2ODY4NGUtMTMgTCAwLC0xLjEzNjg2ODRlLTEzIHogTSAxNzcuNzgxMjUsLTEuMTM2ODY4NGUtMTMgTCAxNzcuNzgxMjUsMjIuMDYyNSBMIDM5OS42ODc1LDIyLjA2MjUgQyAzOTkuNjg3NDksMjIuMDYyNTEgMzc3LjAyMSwtMS4xMzY4Njg0ZS0xMyAzNDcsLTEuMTM2ODY4NGUtMTMgTCAxNzcuNzgxMjUsLTEuMTM2ODY4NGUtMTMgeiBNIDQ0My4yMTg3NSwtMS4xMzY4Njg0ZS0xMyBMIDQ0My4yMTg3NSwyMi4wNjI1IEwgNTc3LjQ2ODc1LDIyLjA2MjUgTCA1NjkuNSwtMS4xMzY4Njg0ZS0xMyBMIDQ0My4yMTg3NSwtMS4xMzY4Njg0ZS0xMyB6IE0gNjczLjcxODc1LC0xLjEzNjg2ODRlLTEzIEwgNjY1Ljc1LDIyLjA2MjUgTCA3OTguNzgxMjUsMjIuMDYyNSBMIDc5OC43ODEyNSwtMS4xMzY4Njg0ZS0xMyBMIDY3My43MTg3NSwtMS4xMzY4Njg0ZS0xMyB6IE0gMCw0Mi45MDYyNSBMIDAsNjQuOTY4NzUgTCAxNTUuNzE4NzUsNjQuOTY4NzUgTCAxNTUuNzE4NzUsNDIuOTA2MjUgTCAwLDQyLjkwNjI1IHogTSAxNzcuNzgxMjUsNDIuOTM3NSBMIDE3Ny43ODEyNSw2NC45Njg3NSBMIDQyNS40Mzc1LDY0Ljk2ODc1IEMgNDI1LjQzNzUsNjQuOTY4NzYgNDIyLjU0NSw0Ny45ODg1IDQxNy41LDQyLjkzNzUgTCAxNzcuNzgxMjUsNDIuOTM3NSB6IE0gNDQzLjIxODc1LDQyLjkzNzUgTCA0NDMuMjE4NzUsNjQuOTY4NzUgTCA1OTIuMTg3NSw2NC45Njg3NSBMIDU4NC44MTI1LDQyLjkzNzUgTCA0NDMuMjE4NzUsNDIuOTM3NSB6IE0gNjU3Ljc4MTI1LDQyLjkzNzUgTCA2NTAuNDA2MjUsNjQuOTY4NzUgTCA3OTguNzgxMjUsNjQuOTY4NzUgTCA3OTguNzgxMjUsNDIuOTM3NSBMIDY1Ny43ODEyNSw0Mi45Mzc1IHogTSA0NC43NSw4NS44MTI1IEwgNDQuNzUsMTA3LjkwNjI1IEwgMTEyLjE4NzUsMTA3LjkwNjI1IEwgMTEyLjE4NzUsODUuODEyNSBMIDQ0Ljc1LDg1LjgxMjUgeiBNIDIyMi41MzEyNSw4NS44MTI1IEwgMjIyLjUzMTI1LDEwNy45MDYyNSBMIDI4OS45Njg3NSwxMDcuOTA2MjUgTCAyODkuOTY4NzUsODUuODEyNSBMIDIyMi41MzEyNSw4NS44MTI1IHogTSAzNTUuNTYyNSw4NS44MTI1IEwgMzU1LjU2MjUsMTA3LjkwNjI1IEwgNDIzLDEwNy45MDYyNSBDIDQyMy4wMDAwMSwxMDcuOTA2MjUgNDI3LjI4MTI1LDk2LjIzODUgNDI3LjI4MTI1LDg1LjgxMjUgTCAzNTUuNTYyNSw4NS44MTI1IHogTSA0ODcuOTY4NzUsODUuODEyNSBMIDQ4Ny45Njg3NSwxMDcuOTA2MjUgTCA2MDcuNTMxMjUsMTA3LjkwNjI1IEwgNTk5LjU2MjUsODUuODEyNSBMIDQ4Ny45Njg3NSw4NS44MTI1IHogTSA2NDMuMDkzNzUsODUuODEyNSBMIDYzNS4wOTM3NSwxMDcuOTA2MjUgTCA3NTUuMjUsMTA3LjkwNjI1IEwgNzU1LjI1LDg1LjgxMjUgTCA2NDMuMDkzNzUsODUuODEyNSB6IE0gNDQuNzUsMTI4Ljc1IEwgNDQuNzUsMTUwLjgxMjUgTCAxMTIuMTg3NSwxNTAuODEyNSBMIDExMi4xODc1LDEyOC43NSBMIDQ0Ljc1LDEyOC43NSB6IE0gMjIyLjUzMTI1LDEyOC43NSBMIDIyMi41MzEyNSwxNTAuODEyNSBMIDM5NC43ODEyNSwxNTAuODEyNSBDIDM5NC43ODEyNiwxNTAuODEyNDkgNDA5LjE5MDI1LDEzOS40OTIgNDEzLjc4MTI1LDEyOC43NSBMIDIyMi41MzEyNSwxMjguNzUgeiBNIDQ4Ny45Njg3NSwxMjguNzUgTCA0ODcuOTY4NzUsMTUwLjgxMjUgTCA1NTUuNDA2MjUsMTUwLjgxMjUgTCA1NTUuNDA2MjUsMTM4LjUzMTI1IEwgNTU5LjY4NzUsMTUwLjgxMjUgTCA2ODMuMjE4NzUsMTUwLjgxMjUgTCA2ODcuODEyNSwxMzguNTMxMjUgTCA2ODcuODEyNSwxNTAuODEyNSBMIDc1NS4yNSwxNTAuODEyNSBMIDc1NS4yNSwxMjguNzUgTCA2MjguNjU2MjUsMTI4Ljc1IEwgNjIxLjkzNzUsMTQ3LjQzNzUgTCA2MTUuMTg3NSwxMjguNzUgTCA0ODcuOTY4NzUsMTI4Ljc1IHogTSA0NC43NSwxNzEuNjU2MjUgTCA0NC43NSwxOTMuNzE4NzUgTCAxMTIuMTg3NSwxOTMuNzE4NzUgTCAxMTIuMTg3NSwxNzEuNjU2MjUgTCA0NC43NSwxNzEuNjU2MjUgeiBNIDIyMi41MzEyNSwxNzEuNjU2MjUgTCAyMjIuNTMxMjUsMTkzLjcxODc1IEwgNDEzLjc4MTI1LDE5My43MTg3NSBDIDQwOS4xODkyNiwxODMuMDExNzUgMzk0Ljc4MTI1LDE3MS42NTYyNSAzOTQuNzgxMjUsMTcxLjY1NjI1IEwgMjIyLjUzMTI1LDE3MS42NTYyNSB6IE0gNDg3Ljk2ODc1LDE3MS42NTYyNSBMIDQ4Ny45Njg3NSwxOTMuNzE4NzUgTCA1NTUuNDA2MjUsMTkzLjcxODc1IEwgNTU1LjQwNjI1LDE3MS42NTYyNSBMIDQ4Ny45Njg3NSwxNzEuNjU2MjUgeiBNIDU2Ny42NTYyNSwxNzEuNjU2MjUgTCA1NzUuODEyNSwxOTMuNzE4NzUgTCA2NjguNDM3NSwxOTMuNzE4NzUgTCA2NzYuMTg3NSwxNzEuNjU2MjUgTCA1NjcuNjU2MjUsMTcxLjY1NjI1IHogTSA2ODcuODEyNSwxNzEuNjU2MjUgTCA2ODcuODEyNSwxOTMuNzE4NzUgTCA3NTUuMjUsMTkzLjcxODc1IEwgNzU1LjI1LDE3MS42NTYyNSBMIDY4Ny44MTI1LDE3MS42NTYyNSB6IE0gNDQuNzUsMjE0LjU2MjUgTCA0NC43NSwyMzYuNjI1IEwgMTEyLjE4NzUsMjM2LjYyNSBMIDExMi4xODc1LDIxNC41NjI1IEwgNDQuNzUsMjE0LjU2MjUgeiBNIDIyMi41MzEyNSwyMTQuNTYyNSBMIDIyMi41MzEyNSwyMzYuNjI1IEwgMjg5Ljk2ODc1LDIzNi42MjUgTCAyODkuOTY4NzUsMjE0LjU2MjUgTCAyMjIuNTMxMjUsMjE0LjU2MjUgeiBNIDM1NS41NjI1LDIxNC41NjI1IEwgMzU1LjU2MjUsMjM2LjYyNSBMIDQyNy4yODEyNSwyMzYuNjI1IEMgNDI3LjI4MTI2LDIyNi4yMTMwMSA0MjMsMjE0LjU2MjUgNDIzLDIxNC41NjI1IEwgMzU1LjU2MjUsMjE0LjU2MjUgeiBNIDQ4Ny45Njg3NSwyMTQuNTYyNSBMIDQ4Ny45Njg3NSwyMzYuNjI1IEwgNTU1LjQwNjI1LDIzNi42MjUgTCA1NTUuNDA2MjUsMjE0LjU2MjUgTCA0ODcuOTY4NzUsMjE0LjU2MjUgeiBNIDU4Mi45Njg3NSwyMTQuNTYyNSBMIDU5MC44NzUsMjM2LjYyNSBMIDY1Mi45Njg3NSwyMzYuNjI1IEwgNjYwLjkzNzUsMjE0LjU2MjUgTCA1ODIuOTY4NzUsMjE0LjU2MjUgeiBNIDY4Ny44MTI1LDIxNC41NjI1IEwgNjg3LjgxMjUsMjM2LjYyNSBMIDc1NS4yNSwyMzYuNjI1IEwgNzU1LjI1LDIxNC41NjI1IEwgNjg3LjgxMjUsMjE0LjU2MjUgeiBNIDEuMjE4NzUsMjU3LjQ2ODc1IEwgMS4yMTg3NSwyNzkuNTYyNSBMIDE1Ni45Mzc1LDI3OS41NjI1IEwgMTU2LjkzNzUsMjU3LjQ2ODc1IEwgMS4yMTg3NSwyNTcuNDY4NzUgeiBNIDE3Ny43ODEyNSwyNTcuNDY4NzUgTCAxNzcuNzgxMjUsMjc5LjU2MjUgTCA0MTcuNSwyNzkuNTYyNSBDIDQyMi41NDUsMjc0LjUwMzUgNDI1LjQzNzUsMjU3LjQ2ODc1IDQyNS40Mzc1LDI1Ny40Njg3NSBMIDE3Ny43ODEyNSwyNTcuNDY4NzUgeiBNIDQ0NC40Mzc1LDI1Ny40Njg3NSBMIDQ0NC40Mzc1LDI3OS41NjI1IEwgNTU1LjQwNjI1LDI3OS41NjI1IEwgNTU1LjQwNjI1LDI1Ny40Njg3NSBMIDQ0NC40Mzc1LDI1Ny40Njg3NSB6IE0gNTk4LjMxMjUsMjU3LjQ2ODc1IEwgNjA2LjQzNzUsMjc5LjU2MjUgTCA2MzguMDMxMjUsMjc5LjU2MjUgTCA2NDUuNjU2MjUsMjU3LjQ2ODc1IEwgNTk4LjMxMjUsMjU3LjQ2ODc1IHogTSA2ODcuODEyNSwyNTcuNDY4NzUgTCA2ODcuODEyNSwyNzkuNTYyNSBMIDgwMCwyNzkuNTYyNSBMIDgwMCwyNTcuNDY4NzUgTCA2ODcuODEyNSwyNTcuNDY4NzUgeiBNIDEuMjE4NzUsMzAwLjQwNjI1IEwgMS4yMTg3NSwzMjIuNDY4NzUgTCAxNTYuOTM3NSwzMjIuNDY4NzUgTCAxNTYuOTM3NSwzMDAuNDA2MjUgTCAxLjIxODc1LDMwMC40MDYyNSB6IE0gMTc3Ljc4MTI1LDMwMC40MDYyNSBMIDE3Ny43ODEyNSwzMjIuNDM3NSBMIDM0NywzMjIuNDM3NSBDIDM3Ny4wMjA5OSwzMjIuNDM3NDkgMzk5LjY4NzUsMzAwLjQwNjI1IDM5OS42ODc1LDMwMC40MDYyNSBMIDE3Ny43ODEyNSwzMDAuNDA2MjUgeiBNIDQ0NC40Mzc1LDMwMC40MDYyNSBMIDQ0NC40Mzc1LDMyMi40Njg3NSBMIDU1NS40MDYyNSwzMjIuNDY4NzUgTCA1NTUuNDA2MjUsMzAwLjQwNjI1IEwgNDQ0LjQzNzUsMzAwLjQwNjI1IHogTSA2MTMuNzE4NzUsMzAwLjQwNjI1IEwgNjIxLjUzMTI1LDMyMi40MDYyNSBMIDYyMi44NzUsMzIyLjQzNzUgTCA2MzAuODEyNSwzMDAuNDA2MjUgTCA2MTMuNzE4NzUsMzAwLjQwNjI1IHogTSA2ODcuODEyNSwzMDAuNDA2MjUgTCA2ODcuODEyNSwzMjIuNDY4NzUgTCA4MDAsMzIyLjQ2ODc1IEwgODAwLDMwMC40MDYyNSBMIDY4Ny44MTI1LDMwMC40MDYyNSB6IgogICAgIGlkPSJyZWN0NyIKICAgICBzdHlsZT0iZmlsbDojZmZmZmZmO2ZpbGwtb3BhY2l0eToxIiAvPgo8L3N2Zz4K" alt="IBM">
+  <a class="nav-link" href="https://ibmbobdevday.com">← Back to Event</a>
+</nav>
+
+<div class="hero" id="heroSection">
+  <div class="hero-eyebrow">// IBM Bob Developer Day · June 2026</div>
+  <h1 class="hero-title">Get Your Certificate</h1>
+  <p class="hero-sub" id="heroSub">Enter your name and email — your certificate will be generated and sent to you instantly.</p>
+  <div class="track-badge" id="trackBadge" style="display:none">
+    <span class="track-badge-label">Track</span>
+    <span class="track-badge-name" id="trackBadgeName"></span>
+    <span class="track-badge-lock">🔒 Pre-selected</span>
+  </div>
+</div>
+
+<div class="main">
+  <div class="form-panel">
+    <div class="form-section-label">// Your Details</div>
+
+    <div class="field">
+      <label class="field-label" for="nameInput">Full Name</label>
+      <input type="text" id="nameInput" placeholder="e.g. Mubeen Khan" autocomplete="name" maxlength="60">
+    </div>
+
+    <div class="field">
+      <label class="field-label" for="emailInput">Email Address</label>
+      <input type="email" id="emailInput" placeholder="you@company.com" autocomplete="email">
+    </div>
+
+    <!-- Track: locked when coming from QR, selector when direct -->
+    <div class="field" id="trackField">
+      <label class="field-label">Track Completed</label>
+      <div id="trackLocked" style="display:none">
+        <div class="locked-track">
+          <span class="locked-track-text" id="lockedTrackText"></span>
+          <span class="locked-track-pill">Confirmed</span>
+        </div>
+      </div>
+      <div id="trackSelector">
+        <div class="track-grid">
+          <label class="track-card"><input type="radio" name="track" value="A"><div class="track-letter">TRACK A</div><div class="track-name-text">Java Modernization with Bob</div></label>
+          <label class="track-card"><input type="radio" name="track" value="B"><div class="track-letter">TRACK B</div><div class="track-name-text">Build an Agent in 45 Minutes</div></label>
+          <label class="track-card"><input type="radio" name="track" value="C"><div class="track-letter">TRACK C</div><div class="track-name-text">Bob vs. a Real-World App</div></label>
+          <label class="track-card"><input type="radio" name="track" value="D"><div class="track-letter">TRACK D</div><div class="track-name-text">Already Use Cursor? What You're Missing</div></label>
+          <label class="track-card"><input type="radio" name="track" value="E"><div class="track-letter">TRACK E</div><div class="track-name-text">AI-Assisted Testing & CI</div></label>
+          <label class="track-card"><input type="radio" name="track" value="F"><div class="track-letter">TRACK F</div><div class="track-name-text">The Governance Lane</div></label>
+        </div>
+      </div>
+    </div>
+
+    <div class="divider-line"></div>
+
+    <button class="btn-submit" id="submitBtn" onclick="handleSubmit()">
+      <span class="btn-text">✉&nbsp; Send My Certificate</span>
+      <div class="spinner"></div>
+    </button>
+    <div class="status" id="statusMsg"></div>
+    <p class="note">Certificate will be emailed to your address. If it doesn't arrive within a few minutes, check spam or contact <a href="mailto:heena.chauhan@ibm.com">heena.chauhan@ibm.com</a>.</p>
+  </div>
+
+  <div class="preview-panel">
+    <div class="preview-label">// Live Preview — updates as you type</div>
+    <div class="canvas-wrap">
+      <canvas id="certCanvas" width="1100" height="619"></canvas>
+    </div>
+    <a class="btn-download" id="downloadBtn" download="IBM_Certificate.png">
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M21 15v4a2 2 0 01-2 2H5a2 2 0 01-2-2v-4M7 10l5 5 5-5M12 15V3"/></svg>
+      Download as PNG
+    </a>
+    <div class="steps">
+      <div class="steps-title">// After receiving your certificate</div>
+      <div class="step-list">
+        <div class="step"><div class="step-num">01</div><div class="step-text">Check your inbox for the email</div></div>
+        <div class="step"><div class="step-num">02</div><div class="step-text">Download the PNG attached</div></div>
+        <div class="step"><div class="step-num">03</div><div class="step-text">LinkedIn → Add credential → Upload image</div></div>
+        <div class="step"><div class="step-num">04</div><div class="step-text">Tag IBM Canada & share 🎉</div></div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<script>
+// ── CONFIG — paste your Airtable webhook URL here ──────────
+const AIRTABLE_WEBHOOK = https://hooks.airtable.com/workflows/v1/genericWebhook/appYo5AO9TQs8hWMN/wfljcRJWfaDLXPxdq/wtrQuDFXr8rfqEVWl;
+
+// ── Track definitions ────────────────────────────────────────
+const TRACKS = {
+  A: 'Track A — Java Modernization with Bob',
+  B: 'Track B — Build an Agent in 45 Minutes',
+  C: 'Track C — Bob vs. a Real-World App',
+  D: "Track D — Already Use Cursor? What You're Missing",
+  E: 'Track E — AI-Assisted Testing & CI',
+  F: 'Track F — The Governance Lane',
+};
+
+// ── Read ?track= from URL and lock the UI ────────────────────
+let lockedTrack = null;
+(function(){
+  const params = new URLSearchParams(window.location.search);
+  const t = (params.get('track') || '').toUpperCase();
+  if(TRACKS[t]){
+    lockedTrack = t;
+    // Show badge in hero
+    document.getElementById('trackBadge').style.display = 'inline-flex';
+    document.getElementById('trackBadgeName').textContent = TRACKS[t];
+    document.getElementById('heroSub').textContent = 'Enter your name and email — your ' + TRACKS[t] + ' certificate will be sent instantly.';
+    // Show locked track, hide selector
+    document.getElementById('trackLocked').style.display = 'block';
+    document.getElementById('trackSelector').style.display = 'none';
+    document.getElementById('lockedTrackText').textContent = TRACKS[t];
+  }
+})();
+
+// ── Track card selection (when no QR) ───────────────────────
+document.querySelectorAll('.track-card input[type=radio]').forEach(r => {
+  r.addEventListener('change', () => {
+    document.querySelectorAll('.track-card').forEach(c => c.classList.remove('selected'));
+    r.closest('.track-card').classList.add('selected');
+    drawCertificate();
+  });
+});
+document.getElementById('nameInput').addEventListener('input', drawCertificate);
+
+// ── Helpers ──────────────────────────────────────────────────
+function getTrack(){
+  if(lockedTrack) return lockedTrack;
+  const sel = document.querySelector('input[name="track"]:checked');
+  return sel ? sel.value : null;
+}
+function getTrackFull(code){ return TRACKS[code] || ''; }
+
+// ── CERTIFICATE CANVAS ───────────────────────────────────────
+const W=1100, H=619;
+const BLUE='#0F62FE', BLUE_DARK='#0043CE', BLUE_LIGHT='#4589FF';
+
+const ibmLogo = new Image();
+ibmLogo.src = 'data:image/svg+xml;base64,PD94bWwgdmVyc2lvbj0iMS4wIiBlbmNvZGluZz0iVVRGLTgiIHN0YW5kYWxvbmU9Im5vIj8+CjwhRE9DVFlQRSBzdmcgUFVCTElDICItLy9XM0MvL0RURCBTVkcgMS4wLy9FTiIgImh0dHA6Ly93d3cudzMub3JnL1RSLzIwMDEvUkVDLVNWRy0yMDAxMDkwNC9EVEQvc3ZnMTAuZHRkIj4KPCEtLSBDcmVhdGVkIHdpdGggSW5rc2NhcGUgKGh0dHA6Ly93d3cuaW5rc2NhcGUub3JnLykgYnkgTWFyc3VwaWxhbWkgLS0+CjxzdmcKICAgeG1sbnM6c3ZnPSJodHRwOi8vd3d3LnczLm9yZy8yMDAwL3N2ZyIKICAgeG1sbnM9Imh0dHA6Ly93d3cudzMub3JnLzIwMDAvc3ZnIgogICB2ZXJzaW9uPSIxLjAiCiAgIHdpZHRoPSIxMDI0IgogICBoZWlnaHQ9IjQyNyIKICAgdmlld0JveD0iLTkuNjc0MDYyNSAtOS42NzQwNjI1IDgxOS4zNDgxMjUgMzQxLjgxNjg3NSIKICAgaWQ9InN2ZzM4OTciPgogIDxkZWZzCiAgICAgaWQ9ImRlZnMzODk5IiAvPgogIDxwYXRoCiAgICAgZD0iTSAwLC0xLjEzNjg2ODRlLTEzIEwgMCwyMi4wNjI1IEwgMTU1LjcxODc1LDIyLjA2MjUgTCAxNTUuNzE4NzUsLTEuMTM2ODY4NGUtMTMgTCAwLC0xLjEzNjg2ODRlLTEzIHogTSAxNzcuNzgxMjUsLTEuMTM2ODY4NGUtMTMgTCAxNzcuNzgxMjUsMjIuMDYyNSBMIDM5OS42ODc1LDIyLjA2MjUgQyAzOTkuNjg3NDksMjIuMDYyNTEgMzc3LjAyMSwtMS4xMzY4Njg0ZS0xMyAzNDcsLTEuMTM2ODY4NGUtMTMgTCAxNzcuNzgxMjUsLTEuMTM2ODY4NGUtMTMgeiBNIDQ0My4yMTg3NSwtMS4xMzY4Njg0ZS0xMyBMIDQ0My4yMTg3NSwyMi4wNjI1IEwgNTc3LjQ2ODc1LDIyLjA2MjUgTCA1NjkuNSwtMS4xMzY4Njg0ZS0xMyBMIDQ0My4yMTg3NSwtMS4xMzY4Njg0ZS0xMyB6IE0gNjczLjcxODc1LC0xLjEzNjg2ODRlLTEzIEwgNjY1Ljc1LDIyLjA2MjUgTCA3OTguNzgxMjUsMjIuMDYyNSBMIDc5OC43ODEyNSwtMS4xMzY4Njg0ZS0xMyBMIDY3My43MTg3NSwtMS4xMzY4Njg0ZS0xMyB6IE0gMCw0Mi45MDYyNSBMIDAsNjQuOTY4NzUgTCAxNTUuNzE4NzUsNjQuOTY4NzUgTCAxNTUuNzE4NzUsNDIuOTA2MjUgTCAwLDQyLjkwNjI1IHogTSAxNzcuNzgxMjUsNDIuOTM3NSBMIDE3Ny43ODEyNSw2NC45Njg3NSBMIDQyNS40Mzc1LDY0Ljk2ODc1IEMgNDI1LjQzNzUsNjQuOTY4NzYgNDIyLjU0NSw0Ny45ODg1IDQxNy41LDQyLjkzNzUgTCAxNzcuNzgxMjUsNDIuOTM3NSB6IE0gNDQzLjIxODc1LDQyLjkzNzUgTCA0NDMuMjE4NzUsNjQuOTY4NzUgTCA1OTIuMTg3NSw2NC45Njg3NSBMIDU4NC44MTI1LDQyLjkzNzUgTCA0NDMuMjE4NzUsNDIuOTM3NSB6IE0gNjU3Ljc4MTI1LDQyLjkzNzUgTCA2NTAuNDA2MjUsNjQuOTY4NzUgTCA3OTguNzgxMjUsNjQuOTY4NzUgTCA3OTguNzgxMjUsNDIuOTM3NSBMIDY1Ny43ODEyNSw0Mi45Mzc1IHogTSA0NC43NSw4NS44MTI1IEwgNDQuNzUsMTA3LjkwNjI1IEwgMTEyLjE4NzUsMTA3LjkwNjI1IEwgMTEyLjE4NzUsODUuODEyNSBMIDQ0Ljc1LDg1LjgxMjUgeiBNIDIyMi41MzEyNSw4NS44MTI1IEwgMjIyLjUzMTI1LDEwNy45MDYyNSBMIDI4OS45Njg3NSwxMDcuOTA2MjUgTCAyODkuOTY4NzUsODUuODEyNSBMIDIyMi41MzEyNSw4NS44MTI1IHogTSAzNTUuNTYyNSw4NS44MTI1IEwgMzU1LjU2MjUsMTA3LjkwNjI1IEwgNDIzLDEwNy45MDYyNSBDIDQyMy4wMDAwMSwxMDcuOTA2MjUgNDI3LjI4MTI1LDk2LjIzODUgNDI3LjI4MTI1LDg1LjgxMjUgTCAzNTUuNTYyNSw4NS44MTI1IHogTSA0ODcuOTY4NzUsODUuODEyNSBMIDQ4Ny45Njg3NSwxMDcuOTA2MjUgTCA2MDcuNTMxMjUsMTA3LjkwNjI1IEwgNTk5LjU2MjUsODUuODEyNSBMIDQ4Ny45Njg3NSw4NS44MTI1IHogTSA2NDMuMDkzNzUsODUuODEyNSBMIDYzNS4wOTM3NSwxMDcuOTA2MjUgTCA3NTUuMjUsMTA3LjkwNjI1IEwgNzU1LjI1LDg1LjgxMjUgTCA2NDMuMDkzNzUsODUuODEyNSB6IE0gNDQuNzUsMTI4Ljc1IEwgNDQuNzUsMTUwLjgxMjUgTCAxMTIuMTg3NSwxNTAuODEyNSBMIDExMi4xODc1LDEyOC43NSBMIDQ0Ljc1LDEyOC43NSB6IE0gMjIyLjUzMTI1LDEyOC43NSBMIDIyMi41MzEyNSwxNTAuODEyNSBMIDM5NC43ODEyNSwxNTAuODEyNSBDIDM5NC43ODEyNiwxNTAuODEyNDkgNDA5LjE5MDI1LDEzOS40OTIgNDEzLjc4MTI1LDEyOC43NSBMIDIyMi41MzEyNSwxMjguNzUgeiBNIDQ4Ny45Njg3NSwxMjguNzUgTCA0ODcuOTY4NzUsMTUwLjgxMjUgTCA1NTUuNDA2MjUsMTUwLjgxMjUgTCA1NTUuNDA2MjUsMTM4LjUzMTI1IEwgNTU5LjY4NzUsMTUwLjgxMjUgTCA2ODMuMjE4NzUsMTUwLjgxMjUgTCA2ODcuODEyNSwxMzguNTMxMjUgTCA2ODcuODEyNSwxNTAuODEyNSBMIDc1NS4yNSwxNTAuODEyNSBMIDc1NS4yNSwxMjguNzUgTCA2MjguNjU2MjUsMTI4Ljc1IEwgNjIxLjkzNzUsMTQ3LjQzNzUgTCA2MTUuMTg3NSwxMjguNzUgTCA0ODcuOTY4NzUsMTI4Ljc1IHogTSA0NC43NSwxNzEuNjU2MjUgTCA0NC43NSwxOTMuNzE4NzUgTCAxMTIuMTg3NSwxOTMuNzE4NzUgTCAxMTIuMTg3NSwxNzEuNjU2MjUgTCA0NC43NSwxNzEuNjU2MjUgeiBNIDIyMi41MzEyNSwxNzEuNjU2MjUgTCAyMjIuNTMxMjUsMTkzLjcxODc1IEwgNDEzLjc4MTI1LDE5My43MTg3NSBDIDQwOS4xODkyNiwxODMuMDExNzUgMzk0Ljc4MTI1LDE3MS42NTYyNSAzOTQuNzgxMjUsMTcxLjY1NjI1IEwgMjIyLjUzMTI1LDE3MS42NTYyNSB6IE0gNDg3Ljk2ODc1LDE3MS42NTYyNSBMIDQ4Ny45Njg3NSwxOTMuNzE4NzUgTCA1NTUuNDA2MjUsMTkzLjcxODc1IEwgNTU1LjQwNjI1LDE3MS42NTYyNSBMIDQ4Ny45Njg3NSwxNzEuNjU2MjUgeiBNIDU2Ny42NTYyNSwxNzEuNjU2MjUgTCA1NzUuODEyNSwxOTMuNzE4NzUgTCA2NjguNDM3NSwxOTMuNzE4NzUgTCA2NzYuMTg3NSwxNzEuNjU2MjUgTCA1NjcuNjU2MjUsMTcxLjY1NjI1IHogTSA2ODcuODEyNSwxNzEuNjU2MjUgTCA2ODcuODEyNSwxOTMuNzE4NzUgTCA3NTUuMjUsMTkzLjcxODc1IEwgNzU1LjI1LDE3MS42NTYyNSBMIDY4Ny44MTI1LDE3MS42NTYyNSB6IE0gNDQuNzUsMjE0LjU2MjUgTCA0NC43NSwyMzYuNjI1IEwgMTEyLjE4NzUsMjM2LjYyNSBMIDExMi4xODc1LDIxNC41NjI1IEwgNDQuNzUsMjE0LjU2MjUgeiBNIDIyMi41MzEyNSwyMTQuNTYyNSBMIDIyMi41MzEyNSwyMzYuNjI1IEwgMjg5Ljk2ODc1LDIzNi42MjUgTCAyODkuOTY4NzUsMjE0LjU2MjUgTCAyMjIuNTMxMjUsMjE0LjU2MjUgeiBNIDM1NS41NjI1LDIxNC41NjI1IEwgMzU1LjU2MjUsMjM2LjYyNSBMIDQyNy4yODEyNSwyMzYuNjI1IEMgNDI3LjI4MTI2LDIyNi4yMTMwMSA0MjMsMjE0LjU2MjUgNDIzLDIxNC41NjI1IEwgMzU1LjU2MjUsMjE0LjU2MjUgeiBNIDQ4Ny45Njg3NSwyMTQuNTYyNSBMIDQ4Ny45Njg3NSwyMzYuNjI1IEwgNTU1LjQwNjI1LDIzNi42MjUgTCA1NTUuNDA2MjUsMjE0LjU2MjUgTCA0ODcuOTY4NzUsMjE0LjU2MjUgeiBNIDU4Mi45Njg3NSwyMTQuNTYyNSBMIDU5MC44NzUsMjM2LjYyNSBMIDY1Mi45Njg3NSwyMzYuNjI1IEwgNjYwLjkzNzUsMjE0LjU2MjUgTCA1ODIuOTY4NzUsMjE0LjU2MjUgeiBNIDY4Ny44MTI1LDIxNC41NjI1IEwgNjg3LjgxMjUsMjM2LjYyNSBMIDc1NS4yNSwyMzYuNjI1IEwgNzU1LjI1LDIxNC41NjI1IEwgNjg3LjgxMjUsMjE0LjU2MjUgeiBNIDEuMjE4NzUsMjU3LjQ2ODc1IEwgMS4yMTg3NSwyNzkuNTYyNSBMIDE1Ni45Mzc1LDI3OS41NjI1IEwgMTU2LjkzNzUsMjU3LjQ2ODc1IEwgMS4yMTg3NSwyNTcuNDY4NzUgeiBNIDE3Ny43ODEyNSwyNTcuNDY4NzUgTCAxNzcuNzgxMjUsMjc5LjU2MjUgTCA0MTcuNSwyNzkuNTYyNSBDIDQyMi41NDUsMjc0LjUwMzUgNDI1LjQzNzUsMjU3LjQ2ODc1IDQyNS40Mzc1LDI1Ny40Njg3NSBMIDE3Ny43ODEyNSwyNTcuNDY4NzUgeiBNIDQ0NC40Mzc1LDI1Ny40Njg3NSBMIDQ0NC40Mzc1LDI3OS41NjI1IEwgNTU1LjQwNjI1LDI3OS41NjI1IEwgNTU1LjQwNjI1LDI1Ny40Njg3NSBMIDQ0NC40Mzc1LDI1Ny40Njg3NSB6IE0gNTk4LjMxMjUsMjU3LjQ2ODc1IEwgNjA2LjQzNzUsMjc5LjU2MjUgTCA2MzguMDMxMjUsMjc5LjU2MjUgTCA2NDUuNjU2MjUsMjU3LjQ2ODc1IEwgNTk4LjMxMjUsMjU3LjQ2ODc1IHogTSA2ODcuODEyNSwyNTcuNDY4NzUgTCA2ODcuODEyNSwyNzkuNTYyNSBMIDgwMCwyNzkuNTYyNSBMIDgwMCwyNTcuNDY4NzUgTCA2ODcuODEyNSwyNTcuNDY4NzUgeiBNIDEuMjE4NzUsMzAwLjQwNjI1IEwgMS4yMTg3NSwzMjIuNDY4NzUgTCAxNTYuOTM3NSwzMjIuNDY4NzUgTCAxNTYuOTM3NSwzMDAuNDA2MjUgTCAxLjIxODc1LDMwMC40MDYyNSB6IE0gMTc3Ljc4MTI1LDMwMC40MDYyNSBMIDE3Ny43ODEyNSwzMjIuNDM3NSBMIDM0NywzMjIuNDM3NSBDIDM3Ny4wMjA5OSwzMjIuNDM3NDkgMzk5LjY4NzUsMzAwLjQwNjI1IDM5OS42ODc1LDMwMC40MDYyNSBMIDE3Ny43ODEyNSwzMDAuNDA2MjUgeiBNIDQ0NC40Mzc1LDMwMC40MDYyNSBMIDQ0NC40Mzc1LDMyMi40Njg3NSBMIDU1NS40MDYyNSwzMjIuNDY4NzUgTCA1NTUuNDA2MjUsMzAwLjQwNjI1IEwgNDQ0LjQzNzUsMzAwLjQwNjI1IHogTSA2MTMuNzE4NzUsMzAwLjQwNjI1IEwgNjIxLjUzMTI1LDMyMi40MDYyNSBMIDYyMi44NzUsMzIyLjQzNzUgTCA2MzAuODEyNSwzMDAuNDA2MjUgTCA2MTMuNzE4NzUsMzAwLjQwNjI1IHogTSA2ODcuODEyNSwzMDAuNDA2MjUgTCA2ODcuODEyNSwzMjIuNDY4NzUgTCA4MDAsMzIyLjQ2ODc1IEwgODAwLDMwMC40MDYyNSBMIDY4Ny44MTI1LDMwMC40MDYyNSB6IgogICAgIGlkPSJyZWN0NyIKICAgICBzdHlsZT0iZmlsbDojZmZmZmZmO2ZpbGwtb3BhY2l0eToxIiAvPgo8L3N2Zz4K';
+ibmLogo.onload = drawCertificate;
+
+function drawCertificate(){
+  const canvas=document.getElementById('certCanvas');
+  const ctx=canvas.getContext('2d');
+  const name=document.getElementById('nameInput').value.trim()||'Your Name';
+  const trackCode=getTrack()||'A';
+  const track=getTrackFull(trackCode);
+
+  ctx.fillStyle='#080808';ctx.fillRect(0,0,W,H);
+
+  // Left edge
+  const eg=ctx.createLinearGradient(0,0,0,H);
+  eg.addColorStop(0,BLUE);eg.addColorStop(0.6,BLUE_DARK);eg.addColorStop(1,'rgba(0,67,206,0)');
+  ctx.fillStyle=eg;ctx.fillRect(0,0,5,H);
+
+  // Geo diamonds
+  ctx.save();ctx.globalAlpha=0.055;
+  [[700,22],[760,22],[820,22],[880,22],[940,22],[730,67],[790,67],[850,67],[910,67],[700,112],[760,112],[820,112],[880,112],[940,112]].forEach(([cx,cy])=>{
+    ctx.save();ctx.translate(cx,cy);ctx.rotate(Math.PI/4);ctx.strokeStyle='#fff';ctx.lineWidth=1;ctx.strokeRect(-20,-20,40,40);ctx.restore();
+  });
+  ctx.globalAlpha=0.09;
+  [[720,22],[840,22],[790,112]].forEach(([cx,cy])=>{
+    ctx.save();ctx.translate(cx,cy);ctx.rotate(Math.PI/4);ctx.fillStyle=BLUE;ctx.fillRect(-18,-18,36,36);ctx.restore();
+  });
+  ctx.restore();
+
+  // Node net
+  ctx.save();ctx.globalAlpha=0.065;
+  const N=[{x:45,y:530},{x:150,y:465},{x:280,y:495},{x:400,y:430},{x:500,y:485},{x:35,y:420},{x:220,y:395}];
+  [[0,1],[1,2],[2,3],[3,4],[0,5],[5,1],[1,6],[6,3]].forEach(([a,b])=>{
+    ctx.beginPath();ctx.moveTo(N[a].x,N[a].y);ctx.lineTo(N[b].x,N[b].y);ctx.strokeStyle='#fff';ctx.lineWidth=1;ctx.stroke();
+  });
+  N.forEach(n=>{ctx.beginPath();ctx.arc(n.x,n.y,5,0,Math.PI*2);ctx.fillStyle='#fff';ctx.fill();});
+  ctx.restore();
+
+  // Ghost symbols
+  ctx.save();ctx.globalAlpha=0.032;
+  ctx.font='bold 56px Courier New';ctx.fillStyle='#fff';ctx.textAlign='right';
+  ctx.fillText('{ }',W-36,530);ctx.fillText('</>',W-36,590);
+  ctx.restore();
+
+  // Corner ticks
+  ctx.save();ctx.strokeStyle='rgba(15,98,254,0.5)';ctx.lineWidth=1.5;
+  const tk=18,tg=12;
+  [[tg,tg,1,0],[tg,tg,0,1],[W-tg-tk,tg,-1,0],[W-tg,tg,0,1],[tg,H-tg,1,0],[tg,H-tg-tk,0,-1],[W-tg-tk,H-tg,-1,0],[W-tg,H-tg-tk,0,-1]].forEach(([x,y,dx,dy])=>{
+    ctx.beginPath();ctx.moveTo(x,y);ctx.lineTo(x+dx*tk,y+dy*tk);ctx.stroke();
+  });
+  ctx.restore();
+
+  // IBM Logo
+  if(ibmLogo.complete&&ibmLogo.naturalWidth>0) ctx.drawImage(ibmLogo,28,28,155,65);
+
+  // Rule
+  ctx.fillStyle=BLUE;ctx.fillRect(28,105,60,2);
+  ctx.beginPath();ctx.arc(92,106,4,0,Math.PI*2);ctx.fill();
+
+  // Header text
+  ctx.font='500 11px IBM Plex Mono,Courier New';ctx.fillStyle=BLUE_LIGHT;ctx.textAlign='left';
+  ctx.fillText('// IBM Developer Conference',28,128);
+  ctx.font='bold 34px IBM Plex Sans,Arial';ctx.fillStyle='#fff';
+  ctx.fillText('IBM Bob Developer Day',24,170);
+  ctx.font='300 12px IBM Plex Sans,Arial';ctx.fillStyle='rgba(255,255,255,0.45)';
+  ctx.fillText('Building Intelligent Apps — Agent Patterns, MCP, and the Future of AI-Native Design',24,192);
+
+  // Pills
+  const pills=[['Hackathon',true],['Hands-on Labs',true],['June 2026',false],['IBM Canada',false]];
+  let px=24;
+  pills.forEach(([p,isBlue])=>{
+    ctx.font='500 9px IBM Plex Mono,Courier New';
+    const tw=ctx.measureText(p).width+20;
+    if(isBlue){ctx.fillStyle='rgba(15,98,254,0.1)';ctx.fillRect(px,207,tw,22);}
+    ctx.strokeStyle=isBlue?'rgba(15,98,254,0.5)':'rgba(255,255,255,0.15)';ctx.lineWidth=0.8;ctx.strokeRect(px,207,tw,22);
+    ctx.fillStyle=isBlue?BLUE_LIGHT:'rgba(255,255,255,0.35)';ctx.textAlign='left';
+    ctx.fillText(p,px+10,222);px+=tw+10;
+  });
+
+  // Banner
+  const bY=244,bH=90;
+  ctx.fillStyle=BLUE;ctx.fillRect(0,bY,W,bH);
+  const bg=ctx.createLinearGradient(W-300,0,W,0);
+  bg.addColorStop(0,'rgba(0,67,206,0)');bg.addColorStop(1,'rgba(0,67,206,0.45)');
+  ctx.fillStyle=bg;ctx.fillRect(0,bY,W,bH);
+  ctx.font='500 9px IBM Plex Mono,Courier New';ctx.fillStyle='rgba(255,255,255,0.6)';ctx.textAlign='center';
+  ctx.fillText('— Official Credential —',W/2,bY+18);
+  ctx.font='bold 26px IBM Plex Sans,Arial';ctx.fillStyle='#fff';
+  ctx.fillText('CERTIFICATE OF PARTICIPATION',W/2,bY+52);
+  ctx.font='300 12px IBM Plex Sans,Arial';ctx.fillStyle='rgba(255,255,255,0.8)';
+  ctx.fillText('IBM Dev Day: Bob Edition',W/2,bY+73);
+
+  // Body
+  const boY=bY+bH;
+  ctx.font='500 10px IBM Plex Mono,Courier New';ctx.fillStyle='rgba(255,255,255,0.3)';ctx.textAlign='center';
+  ctx.fillText('PRESENTED TO',W/2,boY+38);
+
+  let fs=52;ctx.font=`bold ${fs}px IBM Plex Sans,Arial`;
+  while(ctx.measureText(name).width>W-120&&fs>26){fs-=2;ctx.font=`bold ${fs}px IBM Plex Sans,Arial`;}
+  ctx.fillStyle='#fff';ctx.fillText(name,W/2,boY+90);
+
+  const dY=boY+108;
+  const dg=ctx.createLinearGradient(100,dY,W-100,dY);
+  dg.addColorStop(0,'rgba(255,255,255,0)');dg.addColorStop(0.2,'rgba(255,255,255,0.1)');
+  dg.addColorStop(0.5,'rgba(15,98,254,0.6)');dg.addColorStop(0.8,'rgba(255,255,255,0.1)');dg.addColorStop(1,'rgba(255,255,255,0)');
+  ctx.strokeStyle=dg;ctx.lineWidth=1;ctx.beginPath();ctx.moveTo(100,dY);ctx.lineTo(W-100,dY);ctx.stroke();
+  ctx.save();ctx.translate(W/2,dY);ctx.rotate(Math.PI/4);ctx.fillStyle=BLUE;ctx.fillRect(-5,-5,10,10);ctx.restore();
+
+  ctx.font='300 13px IBM Plex Sans,Arial';ctx.fillStyle='rgba(255,255,255,0.5)';ctx.textAlign='center';
+  ctx.fillText('In recognition of participation in',W/2,dY+28);
+  ctx.font='600 13px IBM Plex Sans,Arial';ctx.fillStyle='rgba(255,255,255,0.82)';
+  ctx.fillText('IBM Dev Day: Bob Edition',W/2,dY+46);
+  ctx.font='300 13px IBM Plex Sans,Arial';ctx.fillStyle='rgba(255,255,255,0.5)';
+  ctx.fillText('and successful completion of the',W/2,dY+64);
+
+  // Track chip
+  ctx.font='500 10.5px IBM Plex Mono,Courier New';
+  let td=track;
+  const chipW=Math.min(400,ctx.measureText(td).width+40);
+  const chipX=W/2-chipW/2,chipY=dY+74;
+  ctx.fillStyle='rgba(15,98,254,0.12)';ctx.fillRect(chipX,chipY,chipW,26);
+  ctx.strokeStyle='rgba(69,137,255,0.35)';ctx.lineWidth=0.8;ctx.strokeRect(chipX,chipY,chipW,26);
+  ctx.fillStyle=BLUE_LIGHT;ctx.fillText(td,W/2,chipY+17);
+
+  ctx.font='300 13px IBM Plex Sans,Arial';ctx.fillStyle='rgba(255,255,255,0.5)';
+  ctx.fillText('Hands-on Lab.',W/2,dY+118);
+  ctx.font='italic 300 11px IBM Plex Sans,Arial';ctx.fillStyle='rgba(255,255,255,0.28)';
+  ctx.fillText('Thank you for your commitment to innovation, learning, and practical exploration of IBM technologies.',W/2,dY+138);
+
+  // Footer
+  const fY=H-52;
+  ctx.strokeStyle='rgba(255,255,255,0.06)';ctx.lineWidth=1;ctx.beginPath();ctx.moveTo(28,fY);ctx.lineTo(W-28,fY);ctx.stroke();
+  ctx.font='500 9px IBM Plex Mono,Courier New';ctx.fillStyle='rgba(255,255,255,0.28)';ctx.textAlign='left';
+  ctx.fillText('IBM CANADA',28,fY+16);
+  ctx.font='400 9px IBM Plex Mono,Courier New';ctx.fillStyle='rgba(255,255,255,0.16)';ctx.fillText('JUNE 2026',28,fY+30);
+  ctx.font='400 16px IBM Plex Mono,Courier New';ctx.fillStyle='rgba(255,255,255,0.18)';ctx.textAlign='center';ctx.fillText('{dev}',W/2,fY+18);
+  ctx.font='400 7px IBM Plex Mono,Courier New';ctx.fillStyle='rgba(255,255,255,0.1)';ctx.fillText('IBM DEVELOPER',W/2,fY+30);
+  [[48,0],[32,10],[16,20]].forEach(([bw,by])=>{ctx.fillStyle='rgba(15,98,254,0.7)';ctx.fillRect(W-28-bw,fY+by/2+8,bw,3);});
+
+  const dl=document.getElementById('downloadBtn');
+  dl.href=canvas.toDataURL('image/png');
+  dl.download=`IBM_Bob_DevDay_Certificate_${name.replace(/\s+/g,'_')}.png`;
+}
+
+drawCertificate();
+
+// ── SUBMIT ───────────────────────────────────────────────────
+async function handleSubmit(){
+  const name=document.getElementById('nameInput').value.trim();
+  const email=document.getElementById('emailInput').value.trim();
+  const trackCode=getTrack();
+  if(!name){alert('Please enter your full name.');return;}
+  if(!email||!email.includes('@')){alert('Please enter a valid email address.');return;}
+  if(!trackCode){alert('Please select your track.');return;}
+  const btn=document.getElementById('submitBtn');
+  const status=document.getElementById('statusMsg');
+  btn.classList.add('loading');btn.disabled=true;
+  status.className='status';status.style.display='none';
+  try{
+    const res=await fetch(AIRTABLE_WEBHOOK,{
+      method:'POST',
+      headers:{'Content-Type':'application/json'},
+      body:JSON.stringify({
+        name, email,
+        track: getTrackFull(trackCode),
+        trackCode,
+        event:'IBM Bob Developer Day',
+        date:'June 2026',
+        timestamp:new Date().toISOString()
+      })
+    });
+    if(res.ok||res.status===200||res.status===202){
+      status.className='status success';
+      status.innerHTML=`✓ Sent! Check <strong>${email}</strong> in the next few minutes.`;
+      btn.classList.remove('loading');
+      btn.style.background='#24a148';
+      document.querySelector('.btn-text').textContent='✓ Certificate Sent';
+      btn.disabled=false;
+    } else { throw new Error(res.status); }
+  } catch(e){
+    status.className='status error';
+    status.innerHTML='Could not send automatically. Please use the <strong>Download as PNG</strong> button above and save your certificate directly.';
+    btn.classList.remove('loading');btn.disabled=false;
+  }
+}
+</script>
+</body>
+</html>
