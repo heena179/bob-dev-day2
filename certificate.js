@@ -7,9 +7,9 @@ const params = new URLSearchParams(window.location.search);
 const trackCode = (params.get('track') || 'A').toUpperCase();
 
 const trackNames = {
-    'A': 'TRACK A — JAVA MODERNIZATION WITH BOB',
+    'A': 'JAVA MODERNIZATION WITH BOB',
     'B': 'BUILD AN AGENT IN 45 MINS',
-    'C': 'BOB VS. A REAL-WORLD APP',
+    'C': 'BOB ON A REAL-WORLD APP',
     'D': "ALREADY USE CURSOR? WHAT YOU'RE MISSING",
     'E': 'AI-ASSISTED TESTING & CI',
     'F': 'THE GOVERNANCE LANE'
@@ -40,7 +40,7 @@ function generateCertificate() {
         // Draw track name (between recognition and thank you text)
         ctx.font = "bold 44px Georgia";
         ctx.fillStyle = "#FFFFFF";
-        ctx.fillText(trackNames[trackCode], canvas.width / 2, 1050);
+        ctx.fillText(trackNames[trackCode], canvas.width / 2, 1000);
         
         canvas.style.display = "block";
         document.getElementById("downloadBtn").style.display = "inline-block";
