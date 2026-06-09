@@ -3,11 +3,9 @@ const ctx = canvas.getContext("2d");
 const image = new Image();
 image.src = "assets/certificate-template.png";
 
-// Read track from URL parameter (?track=A)
 const params = new URLSearchParams(window.location.search);
 const trackCode = (params.get('track') || 'A').toUpperCase();
 
-// Map track codes to full names
 const trackNames = {
     'A': 'Track A — Java Modernization with Bob',
     'B': 'Track B — Build an Agent in 45 Minutes',
@@ -17,7 +15,6 @@ const trackNames = {
     'F': 'Track F — The Governance Lane'
 };
 
-// Display locked track in the UI
 document.getElementById('trackDisplay').textContent = '🔒 ' + trackNames[trackCode];
 
 function generateCertificate() {
@@ -32,21 +29,19 @@ function generateCertificate() {
         canvas.width = image.width;
         canvas.height = image.height;
         
-        // Draw the template image
         ctx.drawImage(image, 0, 0);
         
-        // Draw the attendee name
+        // Draw attendee name
         ctx.textAlign = "center";
         ctx.fillStyle = "#FFFFFF";
         ctx.font = "bold 70px Georgia";
-        ctx.fillText(name, canvas.width / 2, 770);
+        ctx.fillText(name, canvas.width / 2, 380);
         
-        // Draw the track name (replace {{TRACK_NAME}} placeholder)
-        ctx.font = "bold 28px Georgia";
+        // Draw track name in the blue box (between recognition & thank you text)
+        ctx.font = "bold 18px 'Courier New', monospace";
         ctx.fillStyle = "#4589FF";  // IBM Blue Light
-        ctx.fillText(trackNames[trackCode], canvas.width / 2, 920);
+        ctx.fillText(trackNames[trackCode], canvas.width / 2, 545);
         
-        // Show download button and canvas
         canvas.style.display = "block";
         document.getElementById("downloadBtn").style.display = "inline-block";
     };
