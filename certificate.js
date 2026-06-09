@@ -29,12 +29,19 @@ function generateCertificate() {
         ctx.fillStyle = "#1d1d1d";
 
         ctx.font =
-            "bold 90px Georgia";
+            "bold 100px Georgia";
+        ctx.strokeStyle = "red";
+ctx.lineWidth = 4;
+
+ctx.beginPath();
+ctx.moveTo(0, 690);
+ctx.lineTo(canvas.width, 690);
+ctx.stroke();
 
         ctx.fillText(
             name,
             canvas.width / 2,
-            1850
+            690
         );
 
         document
