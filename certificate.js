@@ -26,22 +26,15 @@ function generateCertificate() {
 
         ctx.textAlign = "center";
 
-        ctx.fillStyle = "#1d1d1d";
+        ctx.fillStyle = "#FFFFFF";
 
         ctx.font =
-            "bold 100px Georgia";
-        ctx.strokeStyle = "red";
-ctx.lineWidth = 4;
-
-ctx.beginPath();
-ctx.moveTo(0, 690);
-ctx.lineTo(canvas.width, 690);
-ctx.stroke();
+            "bold 70px Georgia";
 
         ctx.fillText(
             name,
             canvas.width / 2,
-            690
+            770
         );
 
         document
