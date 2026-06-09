@@ -35,7 +35,7 @@ function generateCertificate() {
         ctx.textAlign = "center";
         ctx.fillStyle = "#FFFFFF";
         ctx.font = "bold 60px Georgia";
-        ctx.fillText(name, canvas.width / 2, 465);
+        ctx.fillText(name, canvas.width / 2, 770);
         
         // Draw track name (between recognition and thank you text)
         ctx.font = "bold 24px Georgia";
