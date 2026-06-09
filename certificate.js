@@ -38,9 +38,9 @@ function generateCertificate() {
         ctx.fillText(name, canvas.width / 2, 770);
         
         // Draw track name (between recognition and thank you text)
-        ctx.font = "bold 24px Georgia";
+        ctx.font = "bold 44px Georgia";
         ctx.fillStyle = "#FFFFFF";
-        ctx.fillText(trackNames[trackCode], canvas.width / 2, 900);
+        ctx.fillText(trackNames[trackCode], canvas.width / 2, 1050);
         
         canvas.style.display = "block";
         document.getElementById("downloadBtn").style.display = "inline-block";
