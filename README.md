@@ -1,6 +1,6 @@
 # IBM Bob Developer Day Canada — Event Website
 
-Webpage built for IBM Bob Developer Day (June 15 2026, Markham & June 25, 2026 Ottawa). Built with plain HTML/CSS/JS on GitHub Pages with an Airtable backend for registrations and a client-side certificate generation system.
+Webpage built for IBM Bob Developer Day Registration(June 15 2026, Markham & June 25, 2026 Ottawa). Built with plain HTML/CSS/JS on GitHub Pages with an Airtable backend for registrations and a client-side certificate generation system.
 
 
 ##  What to Update for Your Event
