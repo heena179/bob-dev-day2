@@ -889,8 +889,11 @@ body {
 }
 
 .register-consent {
-    font-size: 0.75rem;
-    color: #6f6f6f;
+    font-size: 0.8rem;
+    color: rgba(255,255,255,0.25);
+    font-family: var(--font-mono);
+    margin-top: 8px;
+    margin-bottom: 0;
 }
 
 /* ===================== CONTACT ===================== */
