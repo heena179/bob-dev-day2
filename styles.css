@@ -888,6 +888,11 @@ body {
     padding: 8px;
 }
 
+.register-consent {
+    font-size: 0.75rem;
+    color: #6f6f6f;
+}
+
 /* ===================== CONTACT ===================== */
 .section-contact {
     background: var(--ibm-white);
