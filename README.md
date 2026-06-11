@@ -8,11 +8,10 @@ Webpage built for IBM Bob Developer Day (June 15 2026, Markham & June 25, 2026 O
 ### 1. Event Details
 Search the codebase for these placeholders and replace with your event's info:
 
-What                               Where to find it 
-Event name, date, location        `index.html` — hero section and `<title>` tag 
-Tracks (names, descriptions)       `index.html` — tracks section 
-Speaker / session content           `index.html` — schedule/agenda section 
-Footer text                          `index.html` — footer 
+- Event name, date, location   -    `index.html`  , hero section and `<title>` tag 
+- Tracks (names, descriptions)  -     `index.html` , tracks section 
+- Speaker / session content      -     `index.html` , schedule/agenda section 
+- Footer text                     -     `index.html` , footer 
 
 ### 2. Airtable (Registration Backend)
 
@@ -60,7 +59,7 @@ If you swap the background image, adjust these Y values to match your new layout
 
 ---
 
-## 🧾 Certificate System — How It Works
+## Certificate System — How It Works
 
 1. Attendee scans the QR code at their session
 2. QR code opens `certificate.html?track=A` (track letter in URL)
@@ -70,7 +69,7 @@ If you swap the background image, adjust these Y values to match your new layout
 
 ---
 
-## 🔧 Tech Stack
+##  Tech Stack
 
 - **Hosting:** GitHub Pages (free, no backend)
 - **Registrations:** Airtable (via REST API from the browser)
@@ -80,5 +79,5 @@ If you swap the background image, adjust these Y values to match your new layout
 
 ---
 
-## 📬 Questions?
+##  Questions?
 Reach out to [heena.chauhan@ibm.com](mailto:heena.chauhan@ibm.com) with questions.
