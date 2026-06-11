@@ -888,7 +888,7 @@ body {
     padding: 8px;
 }
 
-.register-consent {
+.register-left .register-consent {
     font-size: 0.8rem;
     color: rgba(255,255,255,0.25);
     font-family: var(--font-mono);
