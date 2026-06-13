@@ -9,7 +9,7 @@ const trackCode = (params.get('track') || 'A').toUpperCase();
 const trackNames = {
     'A': 'JAVA MODERNIZATION WITH BOB',
     'B': 'BUILD AN AGENT IN 45 MINS',
-    'C': 'BOB ON A REAL-WORLD APP',
+    'C': 'BOB vs. A REAL-WORLD APP',
     'D': "ALREADY USE CURSOR? WHAT YOU'RE MISSING",
     'E': 'AI-ASSISTED TESTING & CI',
     'F': 'THE GOVERNANCE LANE'
