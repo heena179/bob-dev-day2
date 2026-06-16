@@ -17,11 +17,11 @@ function emailExists(email) {
 
 // Determine event date based on current page location
 function getEventDate() {
-    const isOttawa = window.location.pathname.includes('/ottawa');
-    if (isOttawa) {
-        return new Date('2026-06-25T08:30:00').getTime();
-    } else {
+    const isMarkham = window.location.pathname.includes('/markham');
+    if (isMarkham) {
         return new Date('2026-06-15T08:30:00').getTime();
+    } else {
+        return new Date('2026-06-25T08:30:00').getTime();
     }
 }
 
