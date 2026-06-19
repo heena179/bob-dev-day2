@@ -183,13 +183,7 @@ function initEventState() {
                 <div class="register-card" style="text-align:center;">
 
                     <span class="section-kicker">This event has ended. See you at the next one!</span>
-
-                    <h2>IBM Bob Developer Day Has Ended</h2>
-
-                    <p>Thank you for attending the ${city.toUpperCase()} event.</p>
-
-                    <p>See you at the next one!</p>
-
+                    
                 </div>
             </div>
         `;
