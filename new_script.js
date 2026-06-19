@@ -182,7 +182,7 @@ function initEventState() {
             <div class="section-inner">
                 <div class="register-card" style="text-align:center;">
 
-                    <span class="section-kicker">Event Complete</span>
+                    <span class="section-kicker">This event has ended. See you at the next one!</span>
 
                     <h2>IBM Bob Developer Day Has Ended</h2>
 
