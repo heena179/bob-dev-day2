@@ -19,7 +19,7 @@ function getCity() {
 
 
 // -------------------------
-// Event Config (Shared Dates Only)
+// Event Config
 // -------------------------
 const eventConfig = {
     markham: {
@@ -44,29 +44,58 @@ const eventConfig = {
 // -------------------------
 function initCountdown() {
     const city = getCity();
-    const eventDate = new Date(eventConfig[city].eventDate).getTime();
+    const config = eventConfig[city];
+
+    if (!config) return;
+
+    const eventDate = new Date(config.eventDate).getTime();
+    const endDate = new Date(config.endDate).getTime();
 
     const countdown = document.getElementById('countdown');
     if (!countdown) return;
 
     function update() {
         const now = new Date().getTime();
-        const distance = eventDate - now;
 
-        if (distance < 0) {
-            countdown.innerHTML =
-                '<div class="countdown-item"><span class="countdown-value">Event Started</span></div>';
+        // Event ended
+        if (now >= endDate) {
+            countdown.innerHTML = `
+                <div class="countdown-item">
+                    <span class="countdown-value">Event Ended</span>
+                </div>
+            `;
             return;
         }
 
+        // Event currently running
+        if (now >= eventDate) {
+            countdown.innerHTML = `
+                <div class="countdown-item">
+                    <span class="countdown-value">Event In Progress</span>
+                </div>
+            `;
+            return;
+        }
+
+        // Countdown before start
+        const distance = eventDate - now;
+
         const days = Math.floor(distance / (1000 * 60 * 60 * 24));
-        const hours = Math.floor((distance % (1000 * 60 * 60 * 24)) / (1000 * 60 * 60));
-        const minutes = Math.floor((distance % (1000 * 60 * 60)) / (1000 * 60));
-        const seconds = Math.floor((distance % (1000 * 60)) / 1000);
+        const hours = Math.floor(
+            (distance % (1000 * 60 * 60 * 24)) / (1000 * 60 * 60)
+        );
+        const minutes = Math.floor(
+            (distance % (1000 * 60 * 60)) / (1000 * 60)
+        );
+        const seconds = Math.floor(
+            (distance % (1000 * 60)) / 1000
+        );
 
         const set = (id, val) => {
             const el = document.getElementById(id);
-            if (el) el.textContent = String(val).padStart(2, '0');
+            if (el) {
+                el.textContent = String(val).padStart(2, '0');
+            }
         };
 
         set('days', days);
@@ -109,7 +138,10 @@ function initSmoothScroll() {
         link.addEventListener('click', e => {
             e.preventDefault();
 
-            const target = document.querySelector(link.getAttribute('href'));
+            const target = document.querySelector(
+                link.getAttribute('href')
+            );
+
             if (target) {
                 target.scrollIntoView({
                     behavior: 'smooth',
@@ -122,7 +154,7 @@ function initSmoothScroll() {
 
 
 // -------------------------
-// Event End State (Generic)
+// Event End State
 // -------------------------
 function initEventState() {
     const city = getCity();
@@ -133,13 +165,16 @@ function initEventState() {
     const now = new Date();
     const endDate = new Date(config.endDate);
 
+    // Event still active
     if (now < endDate) return;
 
     // Hide sticky button
     const sticky = document.getElementById('stickyRegister');
-    if (sticky) sticky.style.display = 'none';
+    if (sticky) {
+        sticky.style.display = 'none';
+    }
 
-    // Replace register section (if exists)
+    // Replace registration section
     const register = document.getElementById('register');
 
     if (register) {
@@ -153,9 +188,7 @@ function initEventState() {
 
                     <p>Thank you for attending the ${city.toUpperCase()} event.</p>
 
-                    <p>
-                        See you at the next one!
-                    </p>
+                    <p>See you at the next one!</p>
 
                 </div>
             </div>
@@ -173,6 +206,3 @@ document.addEventListener('DOMContentLoaded', () => {
     initSmoothScroll();
     initEventState();
 });
-
-
-// Made with Bob
