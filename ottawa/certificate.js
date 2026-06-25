@@ -17,7 +17,9 @@ const trackNames = {
 
     REALWORLD: "BOB ON A REAL-WORLD APPLICATION",
 
-    SECURE: "SECURE DEVELOPMENT WITH IBM BOB"
+    SECURE: "SECURE DEVELOPMENT WITH IBM BOB",
+
+    MAINFRAME: "BOB ON THE MAINFRAME"
 };
 
 const trackName = trackNames[trackCode];
