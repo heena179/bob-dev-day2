@@ -1,0 +1,91 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="UTF-8">
+<title>IBM BOB Dev Day Certificate</title>
+<style>
+body{
+    font-family:Arial,sans-serif;
+    text-align:center;
+    padding:20px;
+    background:#f5f5f5;
+}
+.container{
+    max-width:600px;
+    margin:0 auto;
+    background:white;
+    padding:30px;
+    border-radius:8px;
+    box-shadow:0 2px 8px rgba(0,0,0,0.1);
+}
+h2{
+    color:#0F62FE;
+}
+.track-info{
+    background:#e3f2fd;
+    border:2px solid #0F62FE;
+    padding:12px;
+    margin:20px 0;
+    border-radius:4px;
+    font-weight:bold;
+}
+input{
+    width:100%;
+    padding:12px;
+    font-size:16px;
+    margin-bottom:10px;
+    border:1px solid #ddd;
+    border-radius:4px;
+}
+button{
+    padding:12px 30px;
+    margin-top:10px;
+    font-size:16px;
+    cursor:pointer;
+    background:#0F62FE;
+    color:white;
+    border:none;
+    border-radius:4px;
+}
+button:hover{
+    background:#0043CE;
+}
+canvas{
+    max-width:100%;
+    border:1px solid #ddd;
+    margin-top:20px;
+    display:none;
+}
+#downloadBtn{
+    display:none;
+    margin-top:20px;
+}
+</style>
+</head>
+<body>
+<div class="container">
+    <h2>IBM BOB Dev Day Certificate</h2>
+    
+    <div class="track-info">
+        <div id="trackDisplay"></div>
+    </div>
+    
+    <input
+        id="nameInput"
+        placeholder="Enter your full name"
+    />
+    <br>
+    <button id="generateBtn" onclick="generateCertificate()">
+    Generate Certificate
+</button>
+    <br>
+    <canvas id="certificateCanvas"></canvas>
+    <br>
+    <button id="downloadBtn">
+        Download Certificate
+    </button>
+</div>
+
+<script src="certificate.js"></script>
+</body>
+</html>
