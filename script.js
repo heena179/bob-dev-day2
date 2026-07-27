@@ -36,7 +36,7 @@ const eventConfig = {
     calgary: {
         eventDate: '2026-07-23T08:30:00',
         endDate: '2026-07-24T00:00:00'
-    }
+    },
 
     halifax: {
         eventDate: '2026-08-27T08:30:00',
