@@ -13,6 +13,7 @@ function getCity() {
     if (path.includes('/ottawa/')) return 'ottawa';
     if (path.includes('/markham/')) return 'markham';
     if (path.includes('/calgary/')) return 'calgary';
+    if (path.includes('/halifax/')) return 'halifax';
 
     return 'ottawa'; // default fallback
 }
@@ -35,6 +36,11 @@ const eventConfig = {
     calgary: {
         eventDate: '2026-07-23T08:30:00',
         endDate: '2026-07-24T00:00:00'
+    }
+
+    halifax: {
+        eventDate: '2026-08-27T08:30:00',
+        endDate: '2026-08-28T00:00:00'
     }
 };
 
