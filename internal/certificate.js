@@ -65,7 +65,7 @@ function generateCertificate() {
         ctx.fillText(
             name.toUpperCase(),
             canvas.width / 2,
-            750
+            730
         );
 
         // Show generated certificate
