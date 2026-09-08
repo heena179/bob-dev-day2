@@ -15,7 +15,7 @@ function getCity() {
     if (path.includes('/calgary/')) return 'calgary';
     if (path.includes('/halifax/')) return 'halifax';
 
-    return 'ottawa'; // default fallback
+    return 'markham'; // default fallback
 }
 
 
@@ -24,8 +24,8 @@ function getCity() {
 // -------------------------
 const eventConfig = {
     markham: {
-        eventDate: '2026-06-15T08:30:00',
-        endDate: '2026-06-16T00:00:00'
+        eventDate: '2026-10-15T08:30:00',
+        endDate: '2026-10-16T00:00:00'
     },
 
     ottawa: {
