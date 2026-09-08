@@ -274,9 +274,10 @@ body {
 }
 
 .eyebrow-tag-demand {
-    color: var(--ibm-green);
-    background: rgba(36, 161, 72, 0.12);
-    border: 1px solid rgba(36, 161, 72, 0.35);
+    color: var(--ibm-white);
+    font-weight: 700;
+    background: rgba(255, 255, 255, 0.12);
+    border: 1px solid rgba(255, 255, 255, 0.4);
 }
 
 .eyebrow-divider { color: rgba(255,255,255,0.2); }
