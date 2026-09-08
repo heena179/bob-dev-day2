@@ -265,6 +265,12 @@ body {
     padding: 5px 12px;
 }
 
+.eyebrow-tag-demand {
+    color: var(--ibm-green);
+    background: rgba(36, 161, 72, 0.12);
+    border: 1px solid rgba(36, 161, 72, 0.35);
+}
+
 .eyebrow-divider { color: rgba(255,255,255,0.2); }
 
 .eyebrow-date {
@@ -849,6 +855,15 @@ body {
     color: rgba(255,255,255,0.5);
     line-height: 1.7;
     margin-bottom: 32px;
+}
+
+.register-context {
+    color: var(--ibm-green) !important;
+    font-family: var(--font-mono);
+    font-size: 0.8rem !important;
+    letter-spacing: 0.02em;
+    margin-top: -16px !important;
+    margin-bottom: 28px !important;
 }
 
 .register-perks {
